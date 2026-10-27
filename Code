@@ -1,0 +1,83 @@
+#include <stdio.h>
+// #include <conio.h> // Remove this if using a modern compiler
+
+// Declarations (Prototypes) - Ensure names match exactly
+void read_Matrix(int a[10][10], int m, int n);
+void write_Matrix(int a[10][10], int m, int n);
+void add_Matrix(int a[10][10], int b[10][10], int c[10][10], int m, int n);
+
+int main()
+{
+    int r1, c1; // Removed unused i, j
+    int a[10][10], b[10][10], c[10][10];
+    
+    printf("Input rows and columns of A and B matrix:\n");
+    scanf("%d %d", &r1, &c1); // Fixed typo and removed comma
+
+    if (r1 < 1 || r1 > 10 || c1 < 1 || c1 > 10)
+    {
+        printf("Invalid matrix Size \n");
+        return 1;
+    }
+
+    printf("Enter elements of matrix A:\n");
+    read_Matrix(a, r1, c1); // Fixed spelling to match declaration
+
+    printf("Enter elements of matrix B:\n");
+    read_Matrix(b, r1, c1); // Fixed spelling to match declaration
+
+    add_Matrix(a, b, c, r1, c1); // Fixed spelling to match declaration
+
+    printf("\n Matrix A \n");
+    write_Matrix(a, r1, c1);
+    
+    printf("\n Matrix B \n");
+    write_Matrix(b, r1, c1);
+    
+    // ADDED THIS: You need to print the result!
+    printf("\n Matrix C (Sum) \n");
+    write_Matrix(c, r1, c1);
+
+    // getch(); // Remove if using a modern compiler
+    return 0;
+}
+
+/* Function to read Matrix */
+void read_Matrix(int a[10][10], int m, int n)
+{
+    int i, j;
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            scanf("%d", &a[i][j]); // Ensure lowercase scanf
+        }
+    }
+}
+
+/* Function to write Matrix */
+void write_Matrix(int a[10][10], int m, int n)
+{
+    int i, j;
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            printf("%5d", a[i][j]); // Ensure lowercase printf
+        }
+        printf("\n");
+    }
+}
+
+/* Function to add Matrices */
+void add_Matrix(int a[10][10], int b[10][10], int c[10][10], int m, int n)
+{
+    int i, j;
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            c[i][j] = a[i][j] + b[i][j]; // FIXED: Changed = to +
+        }
+    }
+}
