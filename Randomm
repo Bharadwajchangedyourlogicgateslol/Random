@@ -1,0 +1,27 @@
+@echo off
+title VirtualBox & VC++ Silent Installer
+cd /d "%~dp0"
+
+echo ==============================================
+echo  Downloading & Installing Visual C++ Redist...
+echo ==============================================
+:: Downloads the Microsoft package directly via PowerShell
+powershell -Command "Invoke-WebRequest -Uri 'https://aka.ms' -OutFile 'vc_redist.x64.exe'"
+
+:: Installs it completely hidden
+start /wait "" vc_redist.x64.exe /install /quiet /norestart
+del vc_redist.x64.exe
+
+echo ==============================================
+echo  Installing VirtualBox 7.2.22 Silently...
+echo ==============================================
+:: Installs VirtualBox without showing any installation wizards
+if exist "VirtualBox-7.2.22.exe" (
+    start /wait "" "VirtualBox-7.2.22.exe" --silent
+    echo Done! You can safely remove the USB drive now.
+) else (
+    echo ERROR: Could not find 'VirtualBox-7.2.22.exe' on this USB drive.
+    echo Please make sure the installer file is named correctly.
+)
+
+pause
