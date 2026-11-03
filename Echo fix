@@ -1,0 +1,33 @@
+@echo off
+title Dependency Auto-Installer
+cd /d "%~dp0"
+
+echo ====================================================
+echo  Downloading and Installing Visual C++ 2019 x64
+echo ====================================================
+echo.
+echo Pulling official file from Microsoft server...
+
+:: Uses PowerShell to force secure download bypassing TLS issues
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://aka.ms' -OutFile 'vcredist_x64.exe'"
+
+if exist "vcredist_x64.exe" (
+    echo.
+    echo Download successful. Deploying package silently...
+    start /wait "" vcredist_x64.exe /install /quiet /norestart
+    
+    echo Cleanup installer file...
+    del vcredist_x64.exe
+    
+    echo.
+    echo ====================================================
+    echo SUCCESS: Dependency fix applied.
+    echo You can now close this window and run VirtualBox.
+    echo ====================================================
+) else (
+    echo.
+    echo ERROR: Download failed. Ensure this computer has an active internet connection.
+)
+
+echo.
+pause
