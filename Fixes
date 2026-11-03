@@ -1,0 +1,21 @@
+@echo off
+title VC++ Dependency Fix
+cd /d "%~dp0"
+
+echo ====================================================
+echo  Installing Missing Microsoft Visual C++ Dependency 
+echo ====================================================
+
+if exist "vc_redist.x64.exe" (
+    echo Installing package silently... Please wait...
+    start /wait "" vc_redist.x64.exe /install /quiet /norestart
+    echo.
+    echo SUCCESS: Dependency installed! 
+    echo You can now safely run your VirtualBox installer.
+) else (
+    echo ERROR: Could not find 'vc_redist.x64.exe' on this USB drive.
+    echo Please ensure the file is in the same folder as this script.
+)
+
+echo.
+pause
