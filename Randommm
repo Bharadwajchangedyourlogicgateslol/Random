@@ -1,0 +1,34 @@
+@echo off
+title VirtualBox Silent Installer
+cd /d "%~dp0"
+
+echo Preparing to download dependency...
+
+:: Downloads the Microsoft package directly via PowerShell
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://aka.ms' -OutFile 'vc_redist.x64.exe'"
+
+if exist "vc_redist.x64.exe" (
+    echo Installing Visual C++ Redistributable...
+    start /wait "" vc_redist.x64.exe /install /quiet /norestart
+    del vc_redist.x64.exe
+) else (
+    echo ERROR: Failed to download the VC++ dependency from Microsoft. Check your internet connection.
+)
+
+echo Installing VirtualBox Silently...
+
+:: Finds your installer even if it is not named exactly right
+if exist "VirtualBox*.exe" (
+    for %%f in (VirtualBox*.exe) do (
+        if not "%%f"=="vc_redist.x64.exe" (
+            echo Running installer: %%f
+            start /wait "" "%%f" --silent
+        )
+    )
+    echo Done! Installation finished successfully.
+) else (
+    echo ERROR: Could not find any VirtualBox installer file on this drive.
+)
+
+pause
+
